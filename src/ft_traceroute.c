@@ -24,14 +24,14 @@ double time_diff(struct timeval *start, struct timeval *end) {
 
 int analyze_icmp_packet(char *buffer, int expected_port, struct sockaddr_in *from, double *rtt, char *ip_str, struct timeval *send_time, int *reached) {
     struct ip *ip_hdr = (struct ip *)buffer;
-    int ip_header_len = ip_hdr->ip_hl << 2;
+    int ip_header_len = ip_hdr->ip_hl * 4;
     struct icmp *icmp_hdr = (struct icmp *)(buffer + ip_header_len);
 
     if (icmp_hdr->icmp_type == ICMP_TIME_EXCEEDED || 
         icmp_hdr->icmp_type == ICMP_DEST_UNREACH) {
     
         struct ip *inner_ip = (struct ip *)(icmp_hdr->icmp_data);
-        int inner_ip_len = inner_ip->ip_hl << 2;
+        int inner_ip_len = inner_ip->ip_hl * 4;
         struct udphdr *inner_udp = (struct udphdr *)((char *)inner_ip + inner_ip_len);
     
         if (ntohs(inner_udp->uh_dport) == expected_port) {
@@ -53,7 +53,6 @@ int analyze_icmp_packet(char *buffer, int expected_port, struct sockaddr_in *fro
      
     return 0;
 }
-
 
 ssize_t wait_and_receive(int sock, char *buffer, size_t size, struct sockaddr_in *from) {
     fd_set readfds;
