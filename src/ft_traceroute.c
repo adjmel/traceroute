@@ -220,12 +220,12 @@ int parse_args(int argc, char *argv[])
     if (argc > 2) {
         for (int i = 2; i <= argc; i++) {
                 if (i == argc - 1 && i <= 2)
-                {
-                    fprintf(stderr,
-                        "Cannot handle \"packetlen\" cmdline arg `%s' on position %d (argc %d)\n",
-                        argv[i], i, argc - 1);
-                    exit(0);  
-                }
+                    {
+                        fprintf(stderr,
+                            "Cannot handle \"packetlen\" cmdline arg `%s' on position %d (argc %d)\n",
+                            argv[i], i, argc - 1);
+                        exit(0);  
+                    }
                 else
                     {
                         fprintf(stderr,
