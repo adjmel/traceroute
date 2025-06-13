@@ -217,7 +217,7 @@ int parse_args(int argc, char *argv[])
         exit(0);
     } 
     if (argc > 2) {
-        for (int i = 2; i <= argc; i++) {
+        for (int i = 2; i < argc; i++) {
                 if (i == argc - 1 && i <= 2)
                     {
                         fprintf(stderr,
