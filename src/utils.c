@@ -37,21 +37,3 @@ void	*ft_memset(void *s, int c, size_t n)
 	}
 	return (s);
 }
-
-static size_t	ft_getlenn(long int n)
-{
-	size_t	len;
-
-	len = 1;
-	if (n < 0)
-	{
-		len++;
-		n = -n;
-	}
-	while (n / 10)
-	{
-		n = n / 10;
-		len++;
-	}
-	return (len);
-}
