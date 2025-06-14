@@ -182,8 +182,31 @@ int init_sockets(int *send_sock, int *recv_sock) {
     return 0;
 }
 
+const char* my_gai_strerror(int errcode) {
+    switch (errcode) {
+        case EAI_NONAME:
+            return "Name or service not known";
+        case EAI_AGAIN:
+            return "Temporary failure in name resolution";
+        case EAI_FAIL:
+            return "Non-recoverable failure in name resolution";
+        case EAI_FAMILY:
+            return "Address family not supported";
+        case EAI_SOCKTYPE:
+            return "Socket type not supported";
+        case EAI_SERVICE:
+            return "Service not supported for socket type";
+        case EAI_MEMORY:
+            return "Memory allocation failure";
+        case EAI_SYSTEM:
+            return "System error (check errno)";
+        default:
+            return "Unknown error";
+    }
+}
 
-int resolve_target(const char *input, struct sockaddr_in *target) {
+
+int resolve_target(const char *input, struct sockaddr_in *target, int *err_out) {
     ft_memset(target, 0, sizeof(*target));
     target->sin_family = AF_INET; 
 
@@ -198,6 +221,7 @@ int resolve_target(const char *input, struct sockaddr_in *target) {
 
     int err = getaddrinfo(input, NULL, &hints, &res);
     if (err != 0) {
+        if (err_out) *err_out = err;
         return -1;
     }
 
@@ -248,9 +272,10 @@ int main(int argc, char *argv[]) {
     parse_args(argc, argv);
 
     struct sockaddr_in target;
-    if (resolve_target(argv[1], &target) < 0)
+    int gai_err;
+    if (resolve_target(argv[1], &target, &gai_err) < 0)
         {
-            fprintf(stderr, "%s: Temporary failure in name resolution\n", argv[1]);
+            fprintf(stderr, "%s: %s\n", argv[1], my_gai_strerror(gai_err));
             fprintf(stderr, "Cannot handle \"host\" cmdline arg `%s' on position 1 (argc 1)\n", argv[1]);
             exit(0);
         }

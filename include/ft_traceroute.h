@@ -26,5 +26,4 @@ char *ft_strncpy(char *dest, const char *src, size_t n);
 int ft_strcmp(const char *str1, const char *str2);
 void *ft_memset(void *b, int c, size_t len);
 
-
 #endif
