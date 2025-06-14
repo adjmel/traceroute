@@ -151,7 +151,7 @@ void run_traceroute(int send_sock, int recv_sock, struct sockaddr_in *target) {
     int reached = 0; 
     for (int ttl = 1; ttl <= MAX_TTL && !reached; ttl++) {
         if (setsockopt(send_sock, IPPROTO_IP, IP_TTL, &ttl, sizeof(ttl)) < 0) {
-            perror("setsockopt");
+            fprintf(stderr, "setsockopt: %s\n", strerror(errno));
             break;
         }
         handle_hop(send_sock, recv_sock, target, ttl, &reached);
@@ -169,13 +169,13 @@ void print_header(const char *input, struct sockaddr_in *target) {
 int init_sockets(int *send_sock, int *recv_sock) {
     *send_sock = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
     if (*send_sock < 0) {
-        perror("socket send");
+        fprintf(stderr, "socket send: %s\n", strerror(errno));
         return -1;
     }
 
     *recv_sock = socket(AF_INET, SOCK_RAW, IPPROTO_ICMP);
     if (*recv_sock < 0) {
-        perror("socket recv");
+        fprintf(stderr, "socket recv: %s\n", strerror(errno));
         close(*send_sock);
         return -1;
     }
