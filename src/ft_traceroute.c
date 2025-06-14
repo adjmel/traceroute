@@ -128,7 +128,6 @@ void handle_hop(int send_sock, int recv_sock, struct sockaddr_in *target, int tt
         if (send_udp_probe(send_sock, target, port, &send_time) < 0)
             continue;
 
-
         //RECEPTION
         double rtt;
         char ip_str[INET_ADDRSTRLEN] = {0};
@@ -137,6 +136,7 @@ void handle_hop(int send_sock, int recv_sock, struct sockaddr_in *target, int tt
         struct timeval pause = {0, 100000};
         select(0, NULL, NULL, NULL, &pause);
 
+        
         if (success) {
             ft_strncpy(ip_strs[success_count], ip_str, INET_ADDRSTRLEN);
             rtts[success_count++] = rtt;
