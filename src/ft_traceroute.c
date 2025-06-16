@@ -212,7 +212,7 @@ int parse_args(int argc, char *argv[])
 {
     if (argc < 2) {
         print_help();
-        exit(0);
+        exit(1);
     } 
     if (argc > 2) {
         for (int i = 2; i < argc; i++) {
@@ -221,21 +221,21 @@ int parse_args(int argc, char *argv[])
                         fprintf(stderr,
                             "Cannot handle \"packetlen\" cmdline arg `%s' on position %d (argc %d)\n",
                             argv[i], i, argc - 1);
-                        exit(0);  
+                        exit(1);  
                     }
                 else
                     {
                         fprintf(stderr,
                         "Extra arg `%s' (position 3, argc 3)\n",
                         argv[3]);
-                        exit(0);
+                        exit(1);
                     }
         }
     }
 
     else if (ft_strcmp(argv[1], "--help") == 0) {
         print_help();
-        exit(0);
+        exit(1);
     }
 
     return 0;
@@ -251,12 +251,12 @@ int main(int argc, char *argv[]) {
         {
             fprintf(stderr, "%s: %s\n", argv[1], gai_strerror(gai_error));
             fprintf(stderr, "Cannot handle \"host\" cmdline arg `%s' on position 1 (argc 1)\n", argv[1]);
-            exit(0);
+            exit(1);
         }
 
     int send_sock, recv_sock;
     if (init_sockets(&send_sock, &recv_sock) < 0)
-        exit(0);
+        exit(1);
 
     print_header(argv[1], &target);
     run_traceroute(send_sock, recv_sock, &target);
