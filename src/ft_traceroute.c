@@ -182,7 +182,7 @@ int init_sockets(int *send_sock, int *recv_sock) {
     return 0;
 }
 
-int resolve_target(const char *input, struct sockaddr_in *target, int *gai_error) {
+int resolve_target(const char *input, struct sockaddr_in *target) {
     ft_memset(target, 0, sizeof(*target));
     target->sin_family = AF_INET; 
 
@@ -247,7 +247,7 @@ int main(int argc, char *argv[]) {
 
     struct sockaddr_in target;
     int gai_error;
-    if (resolve_target(argv[1], &target, &gai_error) < 0)
+    if (resolve_target(argv[1], &target) < 0)
         {
             fprintf(stderr, "%s: %s\n", argv[1], gai_strerror(gai_error));
             fprintf(stderr, "Cannot handle \"host\" cmdline arg `%s' on position 1 (argc 1)\n", argv[1]);
